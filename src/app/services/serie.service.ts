@@ -1,27 +1,27 @@
-import { IListaGenero } from './../models/IGenero.models';
-import { Injectable } from '@angular/core';
+import { IListaSeries } from './../models/ISerieApi.models';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class GeneroService {
+export class SerieService {
 
-  lingua = 'pt-BR';
+  lingua = "pt-br";
+  regiao = "BR";
 
   private apiUrl = "https://api.themoviedb.org/3/";
   private key = "?api_key=ae43a89aa1fccc9f48785ef7451bbbe7";
 
   constructor(private http: HttpClient, public toastController: ToastController) { }
 
-  buscarGeneros(tipo: string):Observable<IListaGenero>{
-    const url = `${this.apiUrl}genre/${tipo}/list${this.key}&language=${this.lingua}`;
+  buscarSeries(busca: string): Observable<IListaSeries>{
+    const url = `${this.apiUrl}search/tv${this.key}&language=${this.lingua}&query=${busca}`;
 
-    return this.http.get<IListaGenero>(url).pipe(
+    return this.http.get<IListaSeries>(url).pipe(
       map(retorno => retorno),
       catchError(erro => this.exibirErro(erro))
     );
@@ -37,4 +37,5 @@ export class GeneroService {
     toast.present();
     return null;
   }
+
 }
